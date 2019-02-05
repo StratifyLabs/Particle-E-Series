@@ -1,5 +1,3 @@
-# Nucleo-F429ZI
+# Particle E Series
 
-Stratify OS can be installed on the Nucleo-F429ZI board in less than one minute.
-
-[Learn More](https://stratifylabs.co/hardware/nucleo144/)
+Stratify OS can be installed on the Particle E Series board using this package.
