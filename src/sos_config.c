@@ -86,43 +86,20 @@ SOS_DECLARE_TASK_TABLE(SOS_BOARD_TASK_TOTAL);
  *
  */
 //USART2
-UARTFIFO_DECLARE_CONFIG_STATE(uart1_fifo, 1024,
+UARTFIFO_DECLARE_CONFIG_STATE(uart0_fifo, 1024,
 										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-										SOS_BOARD_USART2_RX_PORT, SOS_BOARD_USART2_RX_PIN, //RX
-										SOS_BOARD_USART2_TX_PORT, SOS_BOARD_USART2_TX_PIN, //TX
+										SOS_BOARD_USART1_RX_PORT, SOS_BOARD_USART1_RX_PIN, //RX
+										SOS_BOARD_USART1_TX_PORT, SOS_BOARD_USART1_TX_PIN, //TX
 										0xff, 0xff,
 										0xff, 0xff);
-#if !defined __debug
-//USART3
-UARTFIFO_DECLARE_CONFIG_STATE(uart2_fifo, 1024,
-										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-										SOS_BOARD_USART3_RX_PORT, SOS_BOARD_USART3_RX_PIN, //RX
-										SOS_BOARD_USART3_TX_PORT, SOS_BOARD_USART3_TX_PIN, //TX
-										0xff, 0xff,
-										0xff, 0xff);
-#endif
 
-//USART6
-UARTFIFO_DECLARE_CONFIG_STATE(uart5_fifo, 1024,
-										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-										SOS_BOARD_USART6_RX_PORT, SOS_BOARD_USART6_RX_PIN, //RX
-										SOS_BOARD_USART6_TX_PORT, SOS_BOARD_USART6_TX_PIN, //TX
-										0xff, 0xff,
-										0xff, 0xff);
 
 //I2C1
 I2C_DECLARE_CONFIG_MASTER(i2c0,
 								  I2C_FLAG_SET_MASTER,
 								  100000,
 								  SOS_BOARD_I2C1_SDA_PORT, SOS_BOARD_I2C1_SDA_PIN, //SDA
-								  SOS_BOARD_I2C1_SCL_PORT, SOS_BOARD_I2C1_SCL_PIN); //SCL
-
-//I2C2
-I2C_DECLARE_CONFIG_MASTER(i2c1,
-								  I2C_FLAG_SET_MASTER,
-								  100000,
-								  SOS_BOARD_I2C2_SDA_PORT, SOS_BOARD_I2C2_SDA_PIN, //SDA
-								  SOS_BOARD_I2C2_SCL_PORT, SOS_BOARD_I2C2_SCL_PIN); //SCL
+								  SOS_BOARD_I2C1_SDA_PORT, SOS_BOARD_I2C1_SCL_PIN); //SCL
 
 
 #define SPI_DMA_FLAGS STM32_DMA_FLAG_IS_NORMAL | \
@@ -138,10 +115,10 @@ const stm32_spi_dma_config_t spi0_dma_config = {
 			.width = 8,
 			.freq = 1000000UL,
 			.pin_assignment = {
-				.miso = {SOS_BOARD_SPI1_MISO_PORT, SOS_BOARD_SPI1_MISO_PIN},
-				.mosi = {SOS_BOARD_SPI1_MOSI_PORT, SOS_BOARD_SPI1_MOSI_PIN},
-				.sck = {SOS_BOARD_SPI1_SCK_PORT, SOS_BOARD_SPI1_SCK_PIN},
-				.cs = {SOS_BOARD_SPI1_CS_PORT, SOS_BOARD_SPI1_CS_PIN}
+				.miso = {SOS_BOARD_SPI1_MISO_PIN},
+				.mosi = {SOS_BOARD_SPI1_MOSI_PIN},
+				.sck = {SOS_BOARD_SPI1_SCK_PIN},
+				.cs = {SOS_BOARD_SPI1_CS_PIN}
 			}
 		}
 	},
@@ -172,10 +149,10 @@ const stm32_spi_dma_config_t spi2_dma_config = {
 			.width = 8,
 			.freq = 1000000UL,
 			.pin_assignment = {
-				.miso = {SOS_BOARD_SPI3_MISO_PORT, SOS_BOARD_SPI3_MISO_PIN},
-				.mosi = {SOS_BOARD_SPI3_MOSI_PORT, SOS_BOARD_SPI3_MOSI_PIN},
-				.sck = {SOS_BOARD_SPI3_SCK_PORT, SOS_BOARD_SPI3_SCK_PIN},
-				.cs = {SOS_BOARD_SPI3_CS_PORT, SOS_BOARD_SPI3_CS_PIN}
+				.miso = {SOS_BOARD_SPI3_MISO_PIN},
+				.mosi = {SOS_BOARD_SPI3_MOSI_PIN},
+				.sck = {SOS_BOARD_SPI3_SCK_PIN},
+				.cs = {SOS_BOARD_SPI3_CS_PIN}
 			}
 		}
 	},
@@ -230,10 +207,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
-	DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c3", mcu_i2c, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("i2c0", mcu_i2c, 0, &i2c0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 	DEVFS_DEVICE("pio0", mcu_pio, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOA
 	DEVFS_DEVICE("pio1", mcu_pio, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOB
@@ -244,10 +218,8 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("pio6", mcu_pio, 6, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOG
 	DEVFS_DEVICE("pio7", mcu_pio, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOH
 
-	DEVFS_DEVICE("spi0", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("spi1", mcu_spi, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("spi2", mcu_spi, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("spi3", mcu_spi, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("spi0", mcu_spi_dma, 0, &spi0_dma_config, 0, 0666, SOS_USER_ROOT, S_IFCHR), //SPI1
+	DEVFS_DEVICE("spi2", mcu_spi_dma, 2, &spi2_dma_config, 0, 0666, SOS_USER_ROOT, S_IFCHR), //SPI2
 
 	DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM1
 	DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM2
@@ -259,11 +231,8 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("tmr7", mcu_tmr, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM8
 	//Does this chip have more timers?
 
-	DEVFS_DEVICE("uart1", uartfifo, 0, &uart1_fifo_config, &uart1_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
-	#if !defined __debug
-	DEVFS_DEVICE("uart2", uartfifo, 0, &uart2_fifo_config, &uart2_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
-	#endif
-	DEVFS_DEVICE("uart5", uartfifo, 0, &uart5_fifo_config, &uart5_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("uart0", uartfifo, 0, &uart0_fifo_config, &uart0_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("uart5", uartfifo, 0, &uart5_fifo_config, &uart5_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_TERMINATOR
 };
 
