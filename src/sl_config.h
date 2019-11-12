@@ -9,6 +9,7 @@
 #define SL_CONFIG_VERSION_STRING "0.01"
 #define SL_CONFIG_VERSION_BCD 0x01
 #define SL_CONFIG_DOCUMENT_ID ""
+#define SL_CONFIG_TEAM_ID ""
 #define SL_CONFIG_NAME "Particle-E-Series"
 #define SL_CONFIG_TYPE "os"
 #define SL_CONFIG_PUBLISHER "Stratify Labs, Inc"
